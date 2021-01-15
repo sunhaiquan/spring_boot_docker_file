@@ -3,4 +3,4 @@ server:
 logging:
   config: classpath:logback-boot.xml
 web:
-  log_path:/opt/logs
+  log_path: /Users/sunhq/workspace-idea/spring_boot_docker_file/logs
