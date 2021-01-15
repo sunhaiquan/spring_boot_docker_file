@@ -1,0 +1,6 @@
+server:
+  port: 9081
+logging:
+  config: classpath:logback-boot.xml
+web:
+  log_path:/opt/logs

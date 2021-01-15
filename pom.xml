@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>spring_boot_docker_file</artifactId>
+    <version>1.0</version>
+    <name>spring_boot_docker_file</name>
+    <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 添加docker-maven插件 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>after-deplo</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <!-- 当运行mvn package时，会自动执行build目标，构建Docker镜像-->
+                            <goal>build</goal>
+                            <!-- 当运行mvn deploy命令时，会自动执行push目标，将Docker镜像push到Docker仓库-->
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 指定docker镜像的repo名字-->
+                    <repository>172.18.35.20:8082/${project.artifactId}</repository>
+                    <!-- 指定docker镜像的tag-->
+                    <tag>${project.version}</tag>
+                    <!--  buildArgs可以指定一个或多个变量，传递给Dockerfile，在Dockerfile中通过ARG指令进行引用-->
+                    <buildArgs>
+                        <!-- 在Dockerfile的其他地方用${JAR_FILE}的方式引用由pom.xml的变量值-->
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <JAR_EXPOSE>9081</JAR_EXPOSE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <distributionManagement>
+        <!--增加发布管理节点-->
+        <!--发布仓库-->
+        <repository>
+            <id>nexus-releases</id>
+            <name>releases</name>
+            <url>http://172.18.35.20:8081/repository/maven-releases/</url>
+        </repository>
+        <!--快照仓库-->
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>snapshots</name>
+            <url>http://172.18.35.20:8081/repository/maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <!--
+           远程仓库，下载依赖jar包s
+            maven-releases,maven-snapshots,third都包含在maven-public-->
+        <repository>
+            <id>maven-public</id>
+            <name>maven-public</name>
+            <url>http://172.18.35.20:8081/repository/maven-public/</url>
+            <!--从这个仓库下载releases版本的构件-->
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!--禁止从公共仓库下载snapshot构件是推荐的做法，因为这些构件不稳定，且不受你控制，应该避免使用-->
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <!--配置Maven从什么地方下载插件构件-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-public</id>
+            <name>maven-public</name>
+            <url>http://172.18.35.20:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
