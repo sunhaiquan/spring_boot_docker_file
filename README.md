@@ -24,6 +24,8 @@ mvn clean deploy -Dmaven.test.skip=true dockerfile:build
 上传镜像到nexus
 pom.xml中配置了上传镜像地址,maven在deploy时，会自动上传镜像
 ```python
+#登录私服
+docker login 212.18.35.20:8082
 
 #手动上传镜像
 docker push 212.18.35.20:8082/test:0.0.1-SNAPSHOT
