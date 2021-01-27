@@ -37,6 +37,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
     <!--多环境参数配置-->
@@ -103,7 +108,7 @@
                 </executions>
                 <configuration>
                     <!-- 指定docker镜像的repo名字-->
-                    <repository>212.18.35.20:8082/${project.artifactId}</repository>
+                    <repository>172.18.35.20:8082/${project.artifactId}</repository>
                     <!-- 指定docker镜像的tag-->
                     <tag>${project.version}</tag>
                     <!--  buildArgs可以指定一个或多个变量，传递给Dockerfile，在Dockerfile中通过ARG指令进行引用-->
@@ -122,13 +127,13 @@
         <repository>
             <id>nexus-releases</id>
             <name>releases</name>
-            <url>http://212.18.35.20:8081/repository/maven-releases/</url>
+            <url>http://172.18.35.20:8081/repository/maven-releases/</url>
         </repository>
         <!--快照仓库-->
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>snapshots</name>
-            <url>http://212.18.35.20:8081/repository/maven-snapshots</url>
+            <url>http://172.18.35.20:8081/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -139,7 +144,7 @@
         <repository>
             <id>maven-public</id>
             <name>maven-public</name>
-            <url>http://212.18.35.20:8081/repository/maven-public/</url>
+            <url>http://172.18.35.20:8081/repository/maven-public/</url>
             <!--从这个仓库下载releases版本的构件-->
             <releases>
                 <enabled>true</enabled>
@@ -155,7 +160,7 @@
         <pluginRepository>
             <id>maven-public</id>
             <name>maven-public</name>
-            <url>http://212.18.35.20:8081/repository/maven-public/</url>
+            <url>http://172.18.35.20:8081/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
