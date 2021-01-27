@@ -1,0 +1,4 @@
+server:
+  port: 9081
+web:
+  log_path: /opt/nstl/docker/pring_boot_docker_file/logs

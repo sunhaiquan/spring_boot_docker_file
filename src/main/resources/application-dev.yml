@@ -1,0 +1,4 @@
+server:
+  port: 9081
+web:
+  log_path: /Users/sunhq/notes/logs

@@ -20,7 +20,7 @@ public class TestApplication {
 
     @RequestMapping("/")
     public String test(){
-        logger.error("aaaaaaaaa>>>>");
+        logger.info("aaaaaaaaa>>>>");
         return "aaa";
     }
 }

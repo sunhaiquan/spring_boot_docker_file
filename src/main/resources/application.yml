@@ -1,6 +1,5 @@
-server:
-  port: 9081
 logging:
   config: classpath:logback-boot.xml
-web:
-  log_path: /Users/sunhq/workspace-idea/spring_boot_docker_file/logs
+spring:
+  profiles:
+    active: @profiles.active@
