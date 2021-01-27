@@ -13,3 +13,6 @@ ENV CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib
 ENV PATH=$JAVA_HOME/bin:$PATH
 #ENTRYPOINT ["java -version"]
 ENTRYPOINT ["java","-jar","/opt/app.jar"]
+
+#maven打包
+#mvn clean deploy -Dmaven.test.skip=true dockerfile:build -P test
